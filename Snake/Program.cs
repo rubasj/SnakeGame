@@ -99,19 +99,27 @@ namespace SnakeGame
 
         private static void checkGameStatus()
         {
-            // check colision with boarders
+            checkBodyCollision();
+            checkSnakeOutOfBounds();
+        }
+
+        private static void checkBodyCollision() { 
+            // check collision head and body
+            for (int i = 1; i < snakeBody.Count(); i++) {
+                if (snakeBody[0].posX == snakeBody[i].posX && snakeBody[0].posY == snakeBody[i].posY) {
+                    gameOver = true;
+                }
+            }
+        }
+
+        private static void checkSnakeOutOfBounds() { 
+            // check collision with boarders
             if (snakeHead.posX == windowWidth - 1
                 || snakeHead.posX == 0
                 || snakeHead.posY == windowHeight - 1
                 || snakeHead.posY == 0)
             {
                 gameOver = true;
-            }
-            // check colision head and body
-            for (int i = 1; i < snakeBody.Count(); i++) {
-                if (snakeBody[0].posX == snakeBody[i].posX && snakeBody[0].posY == snakeBody[i].posY) {
-                    gameOver = true;
-                }
             }
         }
 
