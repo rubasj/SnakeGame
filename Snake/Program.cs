@@ -8,14 +8,15 @@ namespace SnakeGame
     {
         private static int windowHeight = 16;
         private static int windowWidth = 32;
-        private static int score = 5;
+        private static int score = 0;
+        private static int snakeSize = 5;
         private static bool gameOver = false;
         private static string visualRect = "■";
         private static Pixel berry = new Pixel();
         private static Pixel snakeHead = new Pixel();
         private static List<Pixel> snakeBody = new List<Pixel>();
         private static Random randomNumber = new Random();
-        private static string currMove = "RIGHT";
+        private static string currMoveDirection = "RIGHT";
         private static int refreshingInterval = 300;
 
         static void Main(string[] args)
@@ -134,20 +135,20 @@ namespace SnakeGame
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             switch (keyInfo.Key)
             {
-                case ConsoleKey.UpArrow when currMove != "DOWN" && buttonPressed == "no":
-                    currMove = "UP";
+                case ConsoleKey.UpArrow when currMoveDirection != "DOWN" && buttonPressed == "no":
+                    currMoveDirection = "UP";
                     buttonPressed = "yes";
                     break;
-                case ConsoleKey.DownArrow when currMove != "UP" && buttonPressed == "no":
-                    currMove = "DOWN";
+                case ConsoleKey.DownArrow when currMoveDirection != "UP" && buttonPressed == "no":
+                    currMoveDirection = "DOWN";
                     buttonPressed = "yes";
                     break;
-                case ConsoleKey.LeftArrow when currMove != "RIGHT" && buttonPressed == "no":
-                    currMove = "LEFT";
+                case ConsoleKey.LeftArrow when currMoveDirection != "RIGHT" && buttonPressed == "no":
+                    currMoveDirection = "LEFT";
                     buttonPressed = "yes";
                     break;
-                case ConsoleKey.RightArrow when currMove != "LEFT" && buttonPressed == "no":
-                    currMove = "RIGHT";
+                case ConsoleKey.RightArrow when currMoveDirection != "LEFT" && buttonPressed == "no":
+                    currMoveDirection = "RIGHT";
                     buttonPressed = "yes";
                     break;
             }
@@ -155,7 +156,7 @@ namespace SnakeGame
 
         private static void updateSnakePosition()
         {
-            switch (currMove)
+            switch (currMoveDirection)
             {
                 case "UP":
                     snakeHead.posY--;
@@ -178,7 +179,7 @@ namespace SnakeGame
             Pixel newBodyPart = new Pixel { posX = snakeHead.posX, posY = snakeHead.posY};
             snakeBody.Insert(0, newBodyPart);
 
-            if (snakeBody.Count > score)
+            if (snakeBody.Count > snakeSize)
             {
                 snakeBody.RemoveAt(snakeBody.Count - 1);
             }
@@ -202,6 +203,7 @@ namespace SnakeGame
         {
             if (berry.posX == snakeHead.posX && berry.posY == snakeHead.posY)
             {
+                snakeSize++;
                 score++;
                 spawnBerry();
             }
